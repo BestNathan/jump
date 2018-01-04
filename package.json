@@ -1,0 +1,19 @@
+{
+  "name": "jump",
+  "version": "0.0.0",
+  "description": "jump",
+  "main": "index.js",
+  "author": {
+    "name": "nathan"
+  },
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
+  "keywords": [
+    "ÌøÒ»Ìø",
+    "Ğ¡ÓÎÏ·",
+    "weagame",
+    "jump",
+    "weapp"
+  ]
+}
