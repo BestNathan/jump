@@ -58,8 +58,11 @@ async function koaRouter(ctx, next) {
         base_req: base,
         action_data: encData
     }).then(function (data) {
-        console.log(data)
-    })
+        //console.log(data)
+        ctx.body = data
+        }).catch(function (e) {
+            ctx.body = e
+        })
 
 
 }
