@@ -10,14 +10,15 @@ const getFriendScoreUrl = baseUrl + 'wxagame_getfriendsscore'
 const initeUrl = baseUrl + 'wxagame_init'
 const settlementUrl = baseUrl + 'wxagame_settlement'
 
-const base = {}
-base.session_id = session
-base.fast = 1
+
 
 
 async function koaRouter(ctx, next) {
     let session = ctx.request.body.session
     let score = ctx.request.body.score
+    let base = {}
+    base.session_id = session
+    base.fast = 1
     let res = await wxRequest(getFriendScoreUrl, {
         base_req: base
     })
@@ -61,7 +62,7 @@ async function koaRouter(ctx, next) {
         //console.log(data)
         ctx.body = data
         }).catch(function (e) {
-            ctx.body = e
+            ctx.body =  e
         })
 
 
