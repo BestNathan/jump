@@ -26,10 +26,11 @@ async function koaRouter(ctx, next) {
         let res = await wxRequest(getFriendScoreUrl, {
             base_req: base
         })
-        let times = res.my_user_info.times
-        if (!times) {
+        
+        if (res.base_resp.errcode !== 0) {
             ctx.body = 'session´íÎó'
         } else {
+            let times = res.my_user_info.times
             res = await wxRequest(initeUrl, {
                 base_req: base,
                 version: 9
