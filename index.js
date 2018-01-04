@@ -16,49 +16,61 @@ const settlementUrl = baseUrl + 'wxagame_settlement'
 async function koaRouter(ctx, next) {
     let session = ctx.request.body.session
     let score = ctx.request.body.score
-    let base = {}
-    base.session_id = session
-    base.fast = 1
-    let res = await wxRequest(getFriendScoreUrl, {
-        base_req: base
-    })
-    let times = res.my_user_info.times
-    res = await wxRequest(initeUrl, {
-        base_req: base,
-        version:9
-    })
-    console.log(res)
 
-    let game_data = {}
-    game_data.seed = new Date().getTime()
+    if (!session || !score) {
+        ctx.body = 'session »ò score Îª¿Õ'
+    } else {
+        let base = {}
+        base.session_id = session
+        base.fast = 1
+        let res = await wxRequest(getFriendScoreUrl, {
+            base_req: base
+        })
+        let times = res.my_user_info.times
+        if (!times) {
+            ctx.body = 'session´íÎó'
+        } else {
+            res = await wxRequest(initeUrl, {
+                base_req: base,
+                version: 9
+            })
+            console.log(res)
 
-    let action = []
-    let musicList = []
-    let touchList = []
+            let game_data = {}
+            game_data.seed = new Date().getTime()
 
-    for (let i = 0; i < score; i++) {
-        action.push([+Math.random().toFixed(3), +Math.random().toFixed(2), false])
-        musicList.push(false)
-        touchList.push([200 + Number((2 * Math.random()).toFixed(0)), 250 + Number((2 * Math.random()).toFixed(0))])
+            let action = []
+            let musicList = []
+            let touchList = []
+
+            for (let i = 0; i < score; i++) {
+                action.push([+Math.random().toFixed(3), +Math.random().toFixed(2), false])
+                musicList.push(false)
+                touchList.push([200 + Number((2 * Math.random()).toFixed(0)), 250 + Number((2 * Math.random()).toFixed(0))])
+            }
+
+            game_data.action = action
+            game_data.musicList = musicList
+            game_data.touchList = touchList
+            game_data.version = 1
+
+            let encData = {}
+            encData.score = score
+            encData.times = times
+            encData.game_data = JSON.stringify(game_data)
+
+            //console.log(JSON.stringify(encData))
+            encData = aes(JSON.stringify(encData), session)
+            //console.log(encData)
+            ctx.body = await wxRequest(settlementUrl, {
+                base_req: base,
+                action_data: encData
+            })
+        }
+        
     }
 
-    game_data.action = action
-    game_data.musicList = musicList
-    game_data.touchList = touchList
-    game_data.version = 1
-
-    let encData = {}
-    encData.score = score
-    encData.times = times
-    encData.game_data = JSON.stringify(game_data)
     
-    //console.log(JSON.stringify(encData))
-    encData = aes(JSON.stringify(encData), session)
-    //console.log(encData)
-    ctx.body = await wxRequest(settlementUrl, {
-        base_req: base,
-        action_data: encData
-    })
 }
 
 module.exports = koaRouter
