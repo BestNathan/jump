@@ -55,17 +55,10 @@ async function koaRouter(ctx, next) {
     //console.log(JSON.stringify(encData))
     encData = aes(JSON.stringify(encData), session)
     //console.log(encData)
-    wxRequest(settlementUrl, {
+    ctx.body = await wxRequest(settlementUrl, {
         base_req: base,
         action_data: encData
-    }).then(function (data) {
-        //console.log(data)
-        ctx.body = data
-        }).catch(function (e) {
-            ctx.body =  e
-        })
-
-
+    })
 }
 
 module.exports = koaRouter
