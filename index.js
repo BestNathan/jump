@@ -1,4 +1,4 @@
-const aes = require('./aes')
+ï»¿const aes = require('./aes')
 const wxRequest = require('./wxRequest')
 
 //const session = "DoUmU/vp/2coyEXY9yy0Ke+EDfQz0McLCtxsHDm7MSQDO/pTcZ19UdvoeelzbSY3L8oGzUhc7C9pvWzWNLQsPBPIvw1ZuUbQNuhSSmc5z9tenjH2DDwG86+ay4tKfhEeFgqTjcC2PJqnNqHyy1oMgg=="
@@ -18,7 +18,7 @@ async function koaRouter(ctx, next) {
     let score = ctx.request.body.score
 
     if (!session || !score) {
-        ctx.body = 'session »ò score Îª¿Õ'
+        ctx.body = 'session æˆ– score ä¸ºç©º'
     } else {
         let base = {}
         base.session_id = session
@@ -28,7 +28,7 @@ async function koaRouter(ctx, next) {
         })
         
         if (res.base_resp.errcode !== 0) {
-            ctx.body = 'session´íÎó'
+            ctx.body = 'sessioné”™è¯¯'
         } else {
             let times = res.my_user_info.times
             res = await wxRequest(initeUrl, {
